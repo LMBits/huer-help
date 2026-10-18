@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HUEr Help</title>
+<meta name="description" content="How to use HUEr, the visual color editor for Figma: the color map, gradients, variations, Apply Copy, Saved Targets, hue modes, Lite and Pro.">
+<link rel="icon" href="images/HUEr_Icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0f11;
+    --panel: #17181b;
+    --panel-2: #1f2024;
+    --line: rgba(255,255,255,0.09);
+    --ink: #f4f4f5;
+    --text: #c9c9cf;
+    --muted: #8e8e96;
+    --accent: #2fd2c0;
+    --kbd: #2a2b30;
+    --shadow: 0 30px 80px rgba(0,0,0,0.45);
+    --spectrum: linear-gradient(100deg, #ff572e 0%, #d1ff39 25%, #2fffba 50%, #15aafa 75%, #8734ed 98%);
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg: #f3f4f6; --panel: #ffffff; --panel-2: #eef0f3; --line: rgba(20,24,32,0.10);
+      --ink: #15161a; --text: #3b3d44; --muted: #6b6e78; --accent: #0f9d8f; --kbd: #e6e8ec;
+      --shadow: 0 24px 60px rgba(30,40,70,0.14);
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #f3f4f6; --panel: #ffffff; --panel-2: #eef0f3; --line: rgba(20,24,32,0.10);
+    --ink: #15161a; --text: #3b3d44; --muted: #6b6e78; --accent: #0f9d8f; --kbd: #e6e8ec;
+    --shadow: 0 24px 60px rgba(30,40,70,0.14);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 500 17px/1.65 "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); }
+  img { max-width: 100%; display: block; }
+
+  /* ---------- Header ---------- */
+  .top {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: color-mix(in srgb, var(--bg) 86%, transparent);
+    -webkit-backdrop-filter: blur(14px);
+            backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line);
+  }
+  .top-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); }
+  .logo img { width: 36px; height: 36px; border-radius: 9px; }
+  .logo b { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
+  .logo span { font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .theme-toggle {
+    margin-left: auto;
+    border: 0;
+    padding: 0;
+    background: none;
+    cursor: pointer;
+    line-height: 0;
+  }
+  .theme-toggle img { width: 63px; height: 34px; }
+  .theme-toggle .light-icon { display: none; }
+  :root[data-theme="light"] .theme-toggle .dark-icon { display: none; }
+  :root[data-theme="light"] .theme-toggle .light-icon { display: block; }
+
+  /* ---------- Layout ---------- */
+  .layout {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 56px;
+  }
+  nav.toc {
+    position: sticky;
+    top: 88px;
+    align-self: start;
+    padding-top: 40px;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+  }
+  nav.toc a {
+    display: block;
+    padding: 5px 10px;
+    margin-left: -10px;
+    border-radius: 8px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  nav.toc a:hover { color: var(--ink); background: var(--panel-2); }
+  nav.toc .group { margin: 18px 0 6px; font-size: 12px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); opacity: 0.8; }
+
+  main { min-width: 0; padding-top: 40px; }
+  body { overflow-x: hidden; }
+
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 48px;
+    align-items: center;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--line);
+  }
+  .hero h1 {
+    margin: 0;
+    color: var(--ink);
+    font-size: clamp(44px, 6vw, 72px);
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+  }
+  .hero h1 span {
+    background: var(--spectrum);
+    -webkit-background-clip: text;
+            background-clip: text;
+    color: transparent;
+  }
+  .hero p { font-size: 20px; margin: 20px 0 0; }
+  .shot {
+    border-radius: 14px;
+    box-shadow: 0 0 0 1px var(--line), var(--shadow);
+  }
+  .shot.light-only { display: none; }
+  :root[data-theme="light"] .shot.dark-only { display: none; }
+  :root[data-theme="light"] .shot.light-only { display: block; }
+
+  section { padding: 44px 0 8px; border-bottom: 1px solid var(--line); }
+  section:last-of-type { border-bottom: 0; }
+  h2 {
+    margin: 0 0 14px;
+    color: var(--ink);
+    font-size: 32px;
+    line-height: 1.15;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+  h3 { margin: 26px 0 8px; color: var(--ink); font-size: 20px; font-weight: 700; letter-spacing: -0.01em; }
+  p { margin: 0 0 14px; }
+  ul, ol { margin: 0 0 16px; padding-left: 22px; }
+  li { margin: 6px 0; }
+  li::marker { color: var(--muted); }
+  strong { color: var(--ink); font-weight: 700; }
+
+  kbd {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 6px;
+    background: var(--kbd);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    font: 700 14px/1.6 "Inter Tight", system-ui, sans-serif;
+  }
+  .ui {
+    padding: 1px 7px;
+    border-radius: 6px;
+    background: var(--panel-2);
+    color: var(--ink);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .note {
+    margin: 18px 0;
+    padding: 16px 18px;
+    border-radius: 14px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+  }
+  .note b { color: var(--ink); }
+
+  .steps { counter-reset: step; list-style: none; padding: 0; }
+  .steps li {
+    counter-increment: step;
+    position: relative;
+    padding: 4px 0 4px 46px;
+    margin: 10px 0;
+  }
+  .steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 3px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--ink);
+    color: var(--bg);
+    font-weight: 800;
+    font-size: 14px;
+  }
+
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 18px 0;
+  }
+  .card {
+    padding: 20px;
+    border-radius: 16px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+  }
+  .card h3 { margin-top: 0; }
+  .card ul { margin-bottom: 0; }
+  .card .price { margin-top: 12px; color: var(--ink); font-weight: 800; }
+
+  details {
+    border-radius: 14px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    margin: 10px 0;
+  }
+  summary {
+    cursor: pointer;
+    padding: 16px 18px;
+    color: var(--ink);
+    font-weight: 700;
+    list-style: none;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; float: right; color: var(--muted); font-weight: 800; }
+  details[open] summary::after { content: "−"; }
+  details p { padding: 0 18px; }
+
+  footer {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 28px 20px 48px;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; gap: 0; }
+    nav.toc { display: none; }
+    .hero { grid-template-columns: minmax(0, 1fr); }
+    .hero > * { min-width: 0; }
+    .hero .shot { max-width: 300px; }
+    .compare { grid-template-columns: 1fr; }
+    .logo span { display: none; }
+  }
+</style>
+<script>
+  // Remembered theme choice; otherwise follow the system setting.
+  (function () {
+    var saved = null;
+    try { saved = localStorage.getItem("huer-help-theme"); } catch (e) {}
+    var theme = saved || (window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+    document.documentElement.setAttribute("data-theme", theme);
+  })();
+</script>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <a class="logo" href="#top"><img src="images/HUEr_Icon.svg" alt=""><b>HUEr</b><span>Help</span></a>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch between dark and light theme">
+      <img class="dark-icon" src="images/HUEr_Dark_Theme.svg" alt="">
+      <img class="light-icon" src="images/HUEr_Light_Theme.svg" alt="">
+    </button>
+  </div>
+</header>
+
+<div class="layout" id="top">
+  <nav class="toc" aria-label="Contents">
+    <div class="group">Start</div>
+    <a href="#quick-start">Quick start</a>
+    <a href="#panel">The panel</a>
+    <div class="group">Editing</div>
+    <a href="#map">The color map</a>
+    <a href="#groups">Stacks and groups</a>
+    <a href="#multi">Selecting several colors</a>
+    <a href="#gradients">Gradients</a>
+    <a href="#sliders">Sliders and exact colors</a>
+    <a href="#hue-modes">Hue modes</a>
+    <div class="group">Comparing and saving</div>
+    <a href="#variations">Variations</a>
+    <a href="#apply">Apply and Apply Copy</a>
+    <a href="#figma-edits">Editing in Figma</a>
+    <a href="#targets">Saved Targets</a>
+    <a href="#undo">Undo and redo</a>
+    <div class="group">More</div>
+    <a href="#settings">Settings and layout</a>
+    <a href="#support">What HUEr edits</a>
+    <a href="#plans">Lite and Pro</a>
+    <a href="#faq">FAQ</a>
+    <a href="#contact">Get help</a>
+  </nav>
+
+  <main>
+    <div class="hero">
+      <div>
+        <h1>Every color.<br><span>One map.</span></h1>
+        <p>HUEr shows the fills, strokes and gradient stops of the layers you select as dots on one live color map. Drag them, group them, compare directions, and apply the result when it feels right.</p>
+      </div>
+      <div>
+        <img class="shot dark-only" src="images/HUEr_Interface_Portrait_M.png" alt="The HUEr panel in the dark theme">
+        <img class="shot light-only" src="images/HUEr_Interface_L_Portrait_M.png" alt="The HUEr panel in the light theme">
+      </div>
+    </div>
+
+    <section id="quick-start">
+      <h2>Quick start</h2>
+      <ol class="steps">
+        <li>Select one or more layers in Figma, then open HUEr from <strong>Plugins</strong>.</li>
+        <li>Move the <strong>Hue</strong>, <strong>Saturation</strong> and <strong>Lightness</strong> sliders to adjust every color at once.</li>
+        <li>Click a dot on the map to work on that color alone. Drag it to change hue and saturation; hold <kbd>Ctrl</kbd> while dragging to change lightness.</li>
+        <li>Try a few directions with the <span class="ui">A</span>–<span class="ui">F</span> variations, and compare with <span class="ui">Original</span>.</li>
+        <li>Press <span class="ui">Apply</span> to keep the colors, or <span class="ui">Apply Copy</span> to keep them on a copy of the layers.</li>
+      </ol>
+      <div class="note"><b>Nothing is permanent until you apply.</b> Every change is a live preview. If you select different layers or close HUEr without applying, your layers go back to how they were.</div>
+    </section>
+
+    <section id="panel">
+      <h2>The panel, top to bottom</h2>
+      <ul>
+        <li><strong>Header:</strong> HUEr's own <span class="ui">Undo</span> and <span class="ui">Redo</span>, and the <span class="ui">☰</span> settings button.</li>
+        <li><strong>Original, A–F:</strong> the untouched colors, and six editable variations.</li>
+        <li><strong>Exact color:</strong> the selected color's HEX value, with <span class="ui">Copy</span> and <span class="ui">Paste</span>.</li>
+        <li><strong>Color map:</strong> every color in your selection as a dot.</li>
+        <li><strong>Both / Solid / Grad, Make Group, Targets:</strong> choose which paints to edit, group colors, and open Saved Targets.</li>
+        <li><strong>Hue, Saturation, Lightness:</strong> adjust everything, or only what is selected.</li>
+        <li><strong>Reset, Apply, Apply Copy:</strong> undo the current adjustment, or commit your colors.</li>
+      </ul>
+    </section>
+
+    <section id="map">
+      <h2>The color map</h2>
+      <p>Hue runs left to right, and saturation runs from vivid at the top to grey at the bottom. Each dot is a color from your selection, sitting at its own hue and saturation.</p>
+      <ul>
+        <li><strong>Click</strong> a dot to select it. Clicking never moves it; dragging starts only after you move a few pixels.</li>
+        <li><strong>Drag</strong> a dot to recolor it. Every layer that uses that color follows.</li>
+        <li><strong>Hover</strong> a dot to highlight the layers that use it in Figma.</li>
+        <li><strong>Click empty space</strong> in the panel to go back to adjusting everything.</li>
+        <li>A number inside a dot shows how many colors or uses it holds.</li>
+      </ul>
+      <p>Hue wraps around the edges of the map; saturation and lightness stop safely at 0 and 100.</p>
+    </section>
+
+    <section id="groups">
+      <h2>Stacks and groups</h2>
+      <ul>
+        <li><strong>Stacks:</strong> identical colors share one dot with a count, such as <span class="ui">×3</span>, so they always move together.</li>
+        <li><strong>Groups:</strong> select two or more dots and press <span class="ui">Make Group</span> to join them, however far apart they are. Moving a group keeps the differences between its colors.</li>
+        <li><strong>Ungroup</strong> removes one level at a time, so groups inside a group stay intact.</li>
+        <li>Hover a group to preview the colors inside it.</li>
+      </ul>
+      <p>HUEr never groups colors on its own. Groups only exist when you make them.</p>
+    </section>
+
+    <section id="multi">
+      <h2>Selecting several colors</h2>
+      <ul>
+        <li><kbd>Shift</kbd>-click dots to add them to a selection. Selected dots move together and keep their differences.</li>
+        <li>Drag on empty map space to draw a selection box. Hold <kbd>Shift</kbd> to add to the current selection.</li>
+      </ul>
+    </section>
+
+    <section id="gradients">
+      <h2>Gradients</h2>
+      <ul>
+        <li>Gradient stops appear as dots joined by a line, in stop order.</li>
+        <li>Click or drag a <strong>line</strong> to select and move the whole gradient. <kbd>Shift</kbd>-click more lines to move several gradients together.</li>
+        <li>Each stop can also be selected and adjusted on its own.</li>
+        <li>Use <span class="ui">Grad</span> to show only gradient stops, <span class="ui">Solid</span> for solid colors, or <span class="ui">Both</span>.</li>
+      </ul>
+      <p>Linear, radial, angular and diamond gradients are supported, in both fills and strokes.</p>
+    </section>
+
+    <section id="sliders">
+      <h2>Sliders and exact colors</h2>
+      <ul>
+        <li>With nothing selected, the sliders shift <strong>every</strong> color. Saturation and Lightness are relative shifts.</li>
+        <li>With a dot, group or selection active, the sliders show and set its actual values from 0 to 100%.</li>
+        <li>Type a number and press <kbd>Enter</kbd> to set it exactly.</li>
+        <li>Type or paste a HEX value in the exact color field to set the selected color.</li>
+        <li><span class="ui">Reset</span> clears only the adjustment you are working on.</li>
+      </ul>
+    </section>
+
+    <section id="hue-modes">
+      <h2>Hue modes</h2>
+      <p>Choose how hue shifts behave in <span class="ui">☰</span> Settings. You can switch at any time, and switching can be undone.</p>
+      <div class="compare">
+        <div class="card">
+          <h3>Vivid Hue <span style="color:var(--muted);font-weight:600">(default)</span></h3>
+          <p>Classic HSL hue shifting, the way designers know it. Colors stay saturated, but brightness and contrast can change.</p>
+          <p style="margin:0"><strong>Best for</strong> illustration and expressive work.</p>
+        </div>
+        <div class="card">
+          <h3>Keep Contrast</h3>
+          <p>Perceptual (OKLCH) shifting. Perceived brightness and text contrast stay steady as the hue changes; very bright colors may soften.</p>
+          <p style="margin:0"><strong>Best for</strong> recoloring UI, so text and buttons stay readable.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="variations">
+      <h2>Variations</h2>
+      <ul>
+        <li><span class="ui">Original</span> is a read-only view of your starting colors.</li>
+        <li><span class="ui">A</span>–<span class="ui">F</span> are editable variations, and each remembers its own adjustments.</li>
+        <li>Opening an empty variation starts it from the one you were on.</li>
+        <li>Variations last while you work on the same selection. They are not saved after you select other layers or close HUEr.</li>
+      </ul>
+    </section>
+
+    <section id="apply">
+      <h2>Apply and Apply Copy</h2>
+      <ul>
+        <li><span class="ui">Apply</span> commits the colors you see to the selected layers.</li>
+        <li><span class="ui">Apply Copy</span> duplicates the selected layers with the new colors, hides the originals with their colors unchanged, and selects the copies. Copies are named, for example, <em>Card — HUEr A</em>.</li>
+      </ul>
+      <p>If you select different layers before applying, the preview is discarded and your layers go back to how they were. Reselect the same layers to pick up where you left off. Clicking empty canvas keeps your work; HUEr shows <em>Previous selection still active</em> until you select something new.</p>
+    </section>
+
+    <section id="figma-edits">
+      <h2>Editing colors in Figma while HUEr is open</h2>
+      <p>You can keep using Figma's own panels. Colors you change there become the new starting colors of only what you changed, and your variations and adjustments stay on top. Other edits, such as moving or adding gradient stops, rotating a gradient or changing opacity, are kept without changing any other color.</p>
+      <div class="note"><b>Tip: edit a gradient's stops quickly.</b> Under <strong>Selection colors</strong> in Figma's right panel, click the gradient. Figma's gradient editor opens, even when a parent layer is selected, and HUEr picks up your changes.</div>
+    </section>
+
+    <section id="targets">
+      <h2>Saved Targets</h2>
+      <p>A Saved Target is a named set of layers you can come back to.</p>
+      <ul>
+        <li>Open <span class="ui">Targets</span> and save the current selection under a name.</li>
+        <li>Load it later to select the same layers again, even after closing and reopening Figma. Targets are stored in the file.</li>
+        <li>Rename, overwrite or delete Targets. A deleted Target can be brought back with HUEr's Undo.</li>
+        <li>HUEr tells you how many layers were found. Deleted layers are skipped, and layers moved elsewhere in the file are reported.</li>
+      </ul>
+    </section>
+
+    <section id="undo">
+      <h2>Undo and redo</h2>
+      <p>HUEr has its own <span class="ui">Undo</span> and <span class="ui">Redo</span> in the header. They cover color edits, grouping, hue mode switches and Saved Target deletion, and can bring back the layer selection an edit belonged to.</p>
+    </section>
+
+    <section id="settings">
+      <h2>Settings and layout</h2>
+      <ul>
+        <li><strong>Theme:</strong> dark or light.</li>
+        <li><strong>Size:</strong> S, M or L.</li>
+        <li><strong>Hue mode:</strong> Vivid Hue or Keep Contrast.</li>
+        <li><strong>Selection:</strong> two-click safe drag (select first, then drag) or one-click fast drag.</li>
+        <li><strong>Gradient links:</strong> whether a selection box that crosses a gradient line also selects its stops.</li>
+        <li><strong>Wide layout (Pro):</strong> drag the panel's right edge to widen it. When there is room, HUEr switches to a landscape layout with the map beside the controls.</li>
+      </ul>
+      <p>Your settings are remembered between sessions.</p>
+    </section>
+
+    <section id="support">
+      <h2>What HUEr edits</h2>
+      <ul>
+        <li>Solid colors and gradient stops in fills and strokes.</li>
+        <li>Hidden layers, layers inside hidden parents, hidden paints, and zero-opacity layers or paints are ignored.</li>
+        <li>Image and video paints, effects and shadows are not changed.</li>
+        <li>Color styles and variable bindings stay intact.</li>
+      </ul>
+    </section>
+
+    <section id="plans">
+      <h2>HUEr Lite and HUEr Pro</h2>
+      <div class="compare">
+        <div class="card">
+          <h3>Lite</h3>
+          <ul>
+            <li>The color map, with Both, Solid and Grad</li>
+            <li>Global Hue, Saturation and Lightness, including dragging the whole map</li>
+            <li>Live preview, Original and A, and Apply</li>
+            <li>Both hue modes, dark and light themes, S/M/L sizes, Undo and Redo</li>
+          </ul>
+          <div class="price">Free</div>
+        </div>
+        <div class="card">
+          <h3>Pro</h3>
+          <ul>
+            <li>Edit single colors and groups; Make Group and Ungroup</li>
+            <li>Shift-click and box selection, gradient line editing</li>
+            <li>Hover layer highlighting</li>
+            <li>Saved Targets, variations B–F and Apply Copy</li>
+            <li>The resizable wide and landscape layout</li>
+          </ul>
+          <div class="price">$15, one-time</div>
+        </div>
+      </div>
+      <p>Try Pro with <strong>five free trial sessions</strong>. A session is used only when you first use a Pro feature while HUEr is open. Pro is unlocked through Figma's own checkout and stays with your Figma account; HUEr never sees your payment details.</p>
+    </section>
+
+    <section id="faq">
+      <h2>FAQ</h2>
+      <details>
+        <summary>Does HUEr replace color styles and variables?</summary>
+        <p>No. HUEr is for exploring and adjusting the colors already used in a part of your file. Styles and variables remain the place to manage reusable system colors, and HUEr keeps them connected.</p>
+      </details>
+      <details>
+        <summary>Why did my colors go back when I selected something else?</summary>
+        <p>HUEr's changes are a preview until you press Apply or Apply Copy. Selecting different layers discards the preview so nothing changes by accident. Reselect the same layers to continue where you left off.</p>
+      </details>
+      <details>
+        <summary>Which hue mode should I use?</summary>
+        <p>Vivid Hue for illustration and expressive work. Keep Contrast when recoloring UI, so text and buttons stay readable.</p>
+      </details>
+      <details>
+        <summary>Does Keep Contrast guarantee accessible contrast?</summary>
+        <p>No. It keeps brightness and contrast much steadier through hue shifts, but you should still check important text with a contrast checker.</p>
+      </details>
+      <details>
+        <summary>What is the difference between Apply and Apply Copy?</summary>
+        <p>Apply changes the selected layers. Apply Copy creates recolored copies and hides the originals, so you can compare or go back.</p>
+      </details>
+      <details>
+        <summary>Does HUEr send my designs anywhere?</summary>
+        <p>No. HUEr has no network access; everything happens inside Figma. Purchases are handled entirely by Figma.</p>
+      </details>
+      <details>
+        <summary>I bought Pro. Do I need to buy it again on another computer?</summary>
+        <p>No. Pro is tied to your Figma account, so it is available wherever you sign in.</p>
+      </details>
+    </section>
+
+    <section id="contact">
+      <h2>Get help</h2>
+      <p>Found a bug or have an idea? <a href="https://github.com/LMBits/huer-help/issues">Open an issue on GitHub</a> and describe what you did, what you expected and what happened. A screenshot helps.</p>
+    </section>
+  </main>
+</div>
+
+<footer>HUEr by LMBits · A Figma plugin</footer>
+
+<script>
+  document.getElementById("themeToggle").onclick = function () {
+    var next = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", next);
+    try { localStorage.setItem("huer-help-theme", next); } catch (e) {}
+  };
+</script>
+</body>
+</html>
