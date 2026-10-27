@@ -371,11 +371,13 @@
       <ul>
         <li><strong>Stacks:</strong> colors that are the same or close enough share one dot with a count, such as <span class="ui">×3</span>, so they always move together.</li>
         <li>Drop a dot close to a similar color and it snaps onto it, joining its stack. Colors of clearly different lightness, like two greys or white and black, never snap together.</li>
+        <li><strong>Split</strong> breaks a selected stack into its individual uses, so you can edit them separately. <strong>Join</strong> stacks selected dots that share a color.</li>
         <li><strong>Groups:</strong> select two or more dots and press <span class="ui">Make Group</span> to join them, however far apart they are. Moving a group keeps the differences between its colors.</li>
+        <li>When HUEr opens, very similar colors start out sharing one dot as a group. Select it and press <span class="ui">Ungroup</span> to separate them.</li>
         <li><strong>Ungroup</strong> removes one level at a time, so groups inside a group stay intact.</li>
         <li>Hover a group to preview the colors inside it.</li>
       </ul>
-      <p>HUEr never groups colors on its own. Groups only exist when you make them.</p>
+      <p>Apart from that first look, HUEr never groups or regroups colors on its own, and your groups stay after <span class="ui">Apply</span>.</p>
     </section>
 
     <section id="multi">
@@ -403,7 +405,7 @@
       <ul>
         <li>With nothing selected, the sliders shift <strong>every</strong> color. Saturation and Lightness are relative shifts.</li>
         <li>With a dot, group or selection active, the sliders show and set its actual values from 0 to 100%.</li>
-        <li>Double-click a slider to reset just that slider: back to 0 with nothing selected, or back to the selected color's original value.</li>
+        <li>Double-click a slider to reset just that slider: back to 0 with nothing selected, back to the selected color's original value, or, with several colors selected, back to where they were when you selected them.</li>
         <li>Type a number and press <kbd>Enter</kbd> to set it exactly.</li>
         <li>Type or paste a HEX value in the exact color field to set the selected color.</li>
         <li><span class="ui">Reset</span> clears only the adjustment you are working on.</li>
@@ -433,7 +435,8 @@
         <li><span class="ui">Original</span> is a read-only view of your starting colors.</li>
         <li><span class="ui">A</span>–<span class="ui">F</span> are editable variations, and each remembers its own adjustments.</li>
         <li>Opening an empty variation starts it from the one you were on.</li>
-        <li>Variations last while you work on the same selection. They are not saved after you select other layers or close HUEr.</li>
+        <li>Variations last while you work on the same selection. To keep them, save the layers as a <a href="#targets">Saved Target</a>: it stores A–F as presets.</li>
+        <li>After <span class="ui">Apply</span>, the applied colors become the new Original and the variations start fresh.</li>
       </ul>
     </section>
 
@@ -443,7 +446,7 @@
         <li><span class="ui">Apply</span> commits the colors you see to the selected layers.</li>
         <li><span class="ui">Apply Copy</span> duplicates the selected layers with the new colors, hides the originals with their colors unchanged, and selects the copies. Copies are named, for example, <em>Card — HUEr A</em>.</li>
       </ul>
-      <p>If you select different layers before applying, the preview is discarded and your layers go back to how they were. Reselect the same layers to pick up where you left off. Clicking empty canvas keeps your work; HUEr shows <em>Previous selection still active</em> until you select something new.</p>
+      <p>If you select different layers before applying, the preview is discarded and your layers go back to how they were. Clicking empty canvas keeps your work instead: HUEr shows <em>Previous selection still active</em>, and reselecting the same layers picks up where you left off. To keep looks for later, save them in a <a href="#targets">Saved Target</a>.</p>
     </section>
 
     <section id="figma-edits">
@@ -513,14 +516,14 @@
             <li>Edit single colors and groups; Make Group and Ungroup</li>
             <li>Shift-click and box selection, gradient line editing</li>
             <li>Hover layer highlighting</li>
-            <li>Saved Targets, variations B–F and Apply Copy</li>
+            <li>Saved Targets with A–F presets, variations B–F and Apply Copy</li>
             <li>The resizable wide and landscape layout</li>
           </ul>
           <div class="price">$15, one-time</div>
         </div>
       </div>
       <p>After the trial, Pro-only areas are dimmed with a small lock, so you always know what Lite includes. Click <strong>Unlock Pro</strong> at the bottom of the panel to upgrade.</p>
-      <p>Try Pro with <strong>five free trial sessions</strong>. A session is used only when you first use a Pro feature while HUEr is open. Pro is unlocked through Figma's own checkout and stays with your Figma account; HUEr never sees your payment details.</p>
+      <p>Try Pro with <strong>five free trial sessions</strong>. Each time you open HUEr, your first Pro action, such as selecting a single dot, uses one session. Pro is unlocked through Figma's own checkout and stays with your Figma account; HUEr never sees your payment details.</p>
     </section>
 
     <section id="faq">
@@ -531,7 +534,7 @@
       </details>
       <details>
         <summary>Why did my colors go back when I selected something else?</summary>
-        <p>HUEr's changes are a preview until you press Apply or Apply Copy. Selecting different layers discards the preview so nothing changes by accident. Reselect the same layers to continue where you left off.</p>
+        <p>HUEr's changes are a preview until you press Apply or Apply Copy. Selecting different layers discards the preview so nothing changes by accident. If you only clicked empty canvas, reselect the same layers to continue where you left off. To keep your variations for later, save them in a Saved Target.</p>
       </details>
       <details>
         <summary>Which hue mode should I use?</summary>
