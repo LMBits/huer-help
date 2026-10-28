@@ -111,7 +111,10 @@
     font-weight: 600;
   }
   nav.toc a:hover { color: var(--ink); background: var(--panel-2); }
-  nav.toc .group { margin: 18px 0 6px; font-size: 12px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); opacity: 0.8; }
+  /* The section being read, set while scrolling. */
+  nav.toc a.active { color: var(--ink); background: var(--panel-2); box-shadow: inset 3px 0 0 var(--accent); }
+  /* Group headings sit a step brighter than their links. */
+  nav.toc .group { margin: 18px 0 6px; font-size: 12px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text); }
 
   main { min-width: 0; padding-top: 40px; }
   body { overflow-x: hidden; }
@@ -568,6 +571,37 @@
 <footer>HUEr by LMBits · A Figma plugin</footer>
 
 <script>
+  // Highlight the section being read in the contents. A section counts as
+  // current once its heading passes a third of the way down the window; at
+  // the bottom of the page the last section wins.
+  (function () {
+    var links = Array.prototype.slice.call(document.querySelectorAll("nav.toc a[href^='#']"));
+    var sections = links.map(function (link) { return document.getElementById(link.getAttribute("href").slice(1)); });
+    var current = null;
+    function update() {
+      var line = window.innerHeight / 3;
+      var index = 0;
+      for (var i = 0; i < sections.length; i++) {
+        if (sections[i] && sections[i].getBoundingClientRect().top <= line) index = i;
+      }
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) index = sections.length - 1;
+      var link = links[index];
+      if (link === current) return;
+      if (current) current.classList.remove("active");
+      current = link;
+      if (!link) return;
+      link.classList.add("active");
+      var nav = link.parentNode;
+      var top = link.getBoundingClientRect().top - nav.getBoundingClientRect().top + nav.scrollTop;
+      if (top < nav.scrollTop || top + link.offsetHeight > nav.scrollTop + nav.clientHeight) {
+        nav.scrollTop = top - nav.clientHeight / 2;
+      }
+    }
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    update();
+  })();
+
   document.getElementById("themeToggle").onclick = function () {
     var next = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
     document.documentElement.setAttribute("data-theme", next);
