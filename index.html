@@ -361,7 +361,7 @@
       <ul>
         <li><strong>Click</strong> a dot to select it. Clicking never moves it; dragging starts only after you move a few pixels.</li>
         <li><strong>Drag</strong> a dot to recolor it. Every layer that uses that color follows.</li>
-        <li><strong>Hover</strong> a dot to highlight the layers that use it in Figma.</li>
+        <li><strong>Hover</strong> a dot to highlight the layers that use it in Figma (Pro).</li>
         <li><strong>Click empty space</strong> in the panel to go back to adjusting everything.</li>
         <li>A number inside a dot shows how many colors or uses it holds.</li>
       </ul>
@@ -496,7 +496,7 @@
         <li>Solid colors and gradient stops in fills and strokes.</li>
         <li>Hidden layers, layers inside hidden parents, hidden paints, and zero-opacity layers or paints are ignored.</li>
         <li>Image and video paints, effects and shadows are not changed.</li>
-        <li>Color styles and variable bindings stay intact.</li>
+        <li>A color HUEr changes is detached from its color style or color variable, since it no longer matches it. Colors it doesn't change stay linked, and discarding the preview reconnects everything.</li>
       </ul>
     </section>
 
@@ -533,7 +533,7 @@
       <h2>FAQ</h2>
       <details>
         <summary>Does HUEr replace color styles and variables?</summary>
-        <p>No. HUEr is for exploring and adjusting the colors already used in a part of your file. Styles and variables remain the place to manage reusable system colors, and HUEr keeps them connected.</p>
+        <p>No. HUEr is for exploring and adjusting the colors already used in a part of your file. Styles and variables remain the place to manage reusable system colors. Colors HUEr doesn't change stay linked to them; a color you recolor is detached from its style or variable, because it no longer matches it.</p>
       </details>
       <details>
         <summary>Why did my colors go back when I selected something else?</summary>
