@@ -146,6 +146,7 @@
     border-radius: 14px;
     box-shadow: 0 0 0 1px var(--line), var(--shadow);
   }
+  .shot.panel-guide { width: 100%; height: auto; margin: 18px 0 26px; }
   .shot.light-only { display: none; }
   :root[data-theme="light"] .shot.dark-only { display: none; }
   :root[data-theme="light"] .shot.light-only { display: block; }
@@ -344,6 +345,7 @@
 
     <section id="panel">
       <h2>The panel, top to bottom</h2>
+      <img class="shot panel-guide" src="images/HUEr_Panel_Guide.webp" width="1600" height="1472" loading="lazy" alt="The HUEr panel with each row labeled: undo, redo and settings; Original and A to F; exact color; the color map; filter, group and save; hue, saturation and lightness; reset, apply and apply copy.">
       <ul>
         <li><strong>Header:</strong> HUEr's own <span class="ui">Undo</span> and <span class="ui">Redo</span>, and the <span class="ui">☰</span> settings button.</li>
         <li><strong>Original, A–F:</strong> the untouched colors, and six editable variations.</li>
